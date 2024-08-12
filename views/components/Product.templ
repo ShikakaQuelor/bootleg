@@ -1,0 +1,135 @@
+package components
+
+import (
+	"fmt"
+	"shikakaQuelor/bootleg/internals/systembolaget"
+	"shikakaQuelor/bootleg/internals/taxes"
+	"strconv"
+)
+
+type Product struct {
+	ProductID                  string
+	ProductNameBold            string
+	ImageUrl                   string
+	CategoryLevel              string
+	Categories                 []string
+	VolumeMl                   string
+	AlcoholPercentage          float64
+	Vat                        float64
+	AlcoholTax                 float64
+	SystembolagetUnitCut       float64
+	SystembolagetPercentageCut float64
+	TotalPrice                 float64
+	OriginalPrice              float64
+}
+
+templ Products(products []taxes.Product, metadata systembolaget.Metadata) {
+	for _, product := range products {
+		<div
+			class="text-base items-center grid grid-cols-[9rem_1fr_1fr_auto] gap-x-4 bg-neutral-50 p-[1.4rem] border-[#666] border-solid border-[0.1rem]"
+		>
+			if len(product.Images) > 0 {
+				<img
+					class="text-center justify-self-center max-w-[auto] max-h-36"
+					src={ product.Images[0].ImageURL + "_200.png" }
+					alt="NO IMAGE"
+				/>
+			} else {
+				<div></div>
+			}
+			<div class="flex flex-col justify-items-start text-[0.8rem] m-0">
+				<p>
+					<b>{ product.ProductNameBold }</b>
+				</p>
+				<div class="flex justify-items-start flex-col text-[0.8rem] m-0">
+					<p>{ product.CategoryLevel1 }</p>
+					<p>{ product.VolumeText }cl</p>
+					<p>{ strconv.FormatFloat(product.AlcoholPercentage, 'f', -1, 64) }%</p>
+					<p>Art.nr { product.ProductID }</p>
+				</div>
+			</div>
+			<div class="grid grid-cols-[auto_auto]">
+				<p>
+					<b>Inköp</b>
+				</p>
+				<p>
+					<b>{ strconv.FormatFloat(float64(product.OriginalPrice), 'f', 2, 64) } kr</b>
+				</p>
+				<p>Alkoholskatt</p>
+				<p>{ strconv.FormatFloat(product.AlcoholTax, 'f', 2, 64) } kr</p>
+				<p>Systembolagets påslag</p>
+				<p>
+					{ strconv.FormatFloat(float64(product.SystembolagetPercentageCut + product.SystembolagetUnitCut), 'f', 2, 64) } kr
+				</p>
+				<p>Moms</p>
+				<p>{ strconv.FormatFloat(float64(product.Vat), 'f', 2, 64) } kr</p>
+				<p>
+					<b>Du betalar</b>
+				</p>
+				<p>
+					<b>{ strconv.FormatFloat(float64(product.Price), 'f', 2, 64) } kr</b>
+				</p>
+			</div>
+			<svg
+				viewBox="0 0 36 36"
+				class="w-auto h-36 bg-cone-gradient origin-center"
+				style="transform: rotate3d(0, 0, 1, 110deg)"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<defs>
+					<mask id={ product.ProductID }>
+						<rect width="36" height="36" fill="white"></rect>
+						<circle
+							transform="rotate(0 18 18)"
+							cx="18"
+							cy="18"
+							r="15"
+							stroke="black"
+							stroke-width="3"
+							fill="none"
+							stroke-dasharray={ strconv.FormatFloat((1 - float64(product.OriginalPrice / product.Price)) * 320, 'f' , 1,
+          64)+ " 320" }
+							pathLength="360"
+						></circle>
+					</mask>
+				</defs>
+				<rect width="36" height="36" fill="white" mask={ fmt.Sprintf("url(#%v)", product.ProductID) }></rect>
+				<text x="18" y="20.35" class="font-sans text-[0.5rem] origin-center -rotate-[110deg]" style="text-anchor: middle;">
+					{ strconv.FormatFloat((1 - float64(product.OriginalPrice / product.Price)) * 100, 'f', 1, 64) }%
+				</text>
+				<circle
+					mask={ fmt.Sprintf("url(#%v)", product.ProductID) }
+					transform="rotate(0 18 18)"
+					cx="18"
+					cy="18"
+					r="15"
+					stroke="#9ca3af"
+					stroke-width="3.5"
+					fill="none"
+					stroke-dasharray="320 320"
+					pathLength="360"
+				></circle>
+			</svg>
+		</div>
+	}
+	<div class="text-center"></div>
+	if metadata.NextPage > 0 {
+		<div
+			hx-post="/search"
+			hx-vals={ fmt.Sprintf(`{"nextPage": "%d" , "search" : "%s" , "current" : "%v" }`,
+  metadata.NextPage, metadata.Query, metadata.Total) }
+			hx-target="this"
+			hx-trigger="revealed"
+			hx-swap="outerHTML"
+			class="text-center"
+		>
+			{ fmt.Sprintf("Visar %v av %v möjliga produkter", metadata.Total,
+  metadata.DocumentCount) }
+		</div>
+	} else {
+		<div class="text-center">
+			{ fmt.Sprintf("Visar %v av %v möjliga produkter", metadata.Total,
+  metadata.DocumentCount) }
+		</div>
+	}
+}
