@@ -1,46 +1,42 @@
 package views
 
 import (
-	"shikakaQuelor/bootleg/internals/systembolaget"
-	"shikakaQuelor/bootleg/internals/taxes"
-	"shikakaQuelor/bootleg/views/components"
+"shikakaQuelor/bootleg/internals/systembolaget"
+"shikakaQuelor/bootleg/internals/taxes"
+"shikakaQuelor/bootleg/views/components"
 )
 
 templ Index(productData []taxes.Product, metadata systembolaget.Metadata) {
-	<html>
-		<head>
-			<script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script>
-			<script>{htmx.logAll()}</script>
-			<link href="/static/style.css" rel="stylesheet"/>
-			<title>Spritmonopolet</title>
-		</head>
-		<div class="flex flex-col justify-center min-h-svh">
-			<div class="flex-initial">
-				<h1 class="text-6xl font-bold mx-auto text-center mb-2">
-					Bootleg
-				</h1>
-				<div class="max-w-lg mx-auto">
-					<input
-						name="search"
-						hx-post="/search"
-						hx-trigger="search"
-						hx-target="#search-results"
-						hx-swap="innerHTML"
-						class="bg-light-green border border-gold-yellow text-gray-900 text-sm rounded-lg focus:ring-gold-yellow focus:border-gold-yellow block w-full ps-10 p-2.5  dark:bg-light-green dark:border-gold-yellow dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-						type="search"
-						placeholder="Sök här efter alkodryck"
-					/>
-				</div>
-				<div class="text-center">
-					<p>
-						Sök efter en alkodryck i Systembolagets sortiment för att se hur stor
-						andel av priset som är skatt
-					</p>
-				</div>
-			</div>
-			<div id="search-results">
-				@components.Products(productData, metadata)
-			</div>
-		</div>
-	</html>
+<html>
+
+<head>
+  <script src="https://unpkg.com/htmx.org@2.0.1"
+    integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/"
+    crossorigin="anonymous"></script>
+  <link href="/static/style.css" rel="stylesheet" />
+  <title>Bootleg</title>
+</head>
+<div class="flex flex-col justify-center min-h-svh">
+  <div class="flex-initial">
+    <h1 class="text-6xl font-bold mx-auto text-center mb-2">
+      Bootleg
+    </h1>
+    <div class="max-w-lg mx-auto">
+      <input name="search" hx-post="/search" hx-trigger="search" hx-target="#search-results" hx-swap="innerHTML"
+        class="bg-light-green border border-gold-yellow text-gray-900 text-sm rounded-lg focus:ring-gold-yellow focus:border-gold-yellow block w-full ps-10 p-2.5  dark:bg-light-green dark:border-gold-yellow dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        type="search" placeholder="Sök här efter alkodryck" />
+    </div>
+    <div class="text-center">
+      <p>
+        Sök efter en alkodryck i Systembolagets sortiment för att se hur stor
+        andel av priset som är skatt
+      </p>
+    </div>
+  </div>
+  <div id="search-results">
+    @components.Products(productData, metadata)
+  </div>
+</div>
+
+</html>
 }
