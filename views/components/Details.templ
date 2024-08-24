@@ -1,0 +1,39 @@
+package components
+
+import "strconv"
+
+type ProductDetails struct {
+	SystembolagetType          string `form:"SystembolagetType"`
+	SkatteverketType           string `form:"SkatteverketType"`
+	IsAlcoholFree              bool   `form:"IsAlcoholFree"`
+	SystembolagetUnitCut       string `form:"SystembolagetUnitCut"`
+	SystembolagetPercentageCut string `form:"SystembolagetPercentageCut"`
+}
+
+templ Details(product ProductDetails) {
+	<div
+		id="modal"
+		class="fixed inset-0 bg-opacity-50 z-50 flex flex-col items-center"
+		_="on closeModal add .closing then wait for animationend then remove me"
+	>
+		<div class="absolute -z-10 inset-0" _="on click trigger closeModal"></div>
+		<div class="m-auto bg-gray-200 w-9/12 m-w-[48rem] border-solid border-sky-50 rounded-lg shadow-md p-5">
+			<div class="grid grid-cols-[auto_auto] gap-x-5 order-4 w-full">
+				<p>Systembolaget typ </p>
+				<p>{ product.SystembolagetType }</p>
+				<p>Skatteverket typ</p>
+				<p>{ product.SkatteverketType }</p>
+				<p>Alkoholfri</p>
+				<p>{ strconv.FormatBool(product.IsAlcoholFree) }</p>
+				<p>Systembolagets fasta påslag</p>
+				<p>{ product.SystembolagetUnitCut }</p>
+				<p>Systembolagets rörliga påslag</p>
+				<p>{ product.SystembolagetPercentageCut }</p>
+				<p></p>
+			</div>
+			<br/>
+			<br/>
+			<button class="" _="on click trigger closeModal">Close</button>
+		</div>
+	</div>
+}

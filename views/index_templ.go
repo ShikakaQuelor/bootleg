@@ -32,7 +32,7 @@ func Index(productData []taxes.Product, metadata systembolaget.Metadata) templ.C
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><script src=\"https://unpkg.com/htmx.org@2.0.1\" integrity=\"sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/\" crossorigin=\"anonymous\"></script><script>{htmx.logAll()}</script><link href=\"/static/style.css\" rel=\"stylesheet\"><title>Spritmonopolet</title></head><div class=\"flex flex-col justify-center min-h-svh\"><div class=\"flex-initial\"><h1 class=\"text-6xl font-bold mx-auto text-center mb-2\">Bootleg</h1><div class=\"max-w-lg mx-auto\"><input name=\"search\" hx-post=\"/search\" hx-trigger=\"search\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" class=\"bg-light-green border border-gold-yellow text-gray-900 text-sm rounded-lg focus:ring-gold-yellow focus:border-gold-yellow block w-full ps-10 p-2.5  dark:bg-light-green dark:border-gold-yellow dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\" type=\"search\" placeholder=\"Sök här efter alkodryck\"></div><div class=\"text-center\"><p>Sök efter en alkodryck i Systembolagets sortiment för att se hur stor andel av priset som är skatt</p></div></div><div id=\"search-results\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script><script src=\"https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js\"></script><link href=\"/static/style.css\" rel=\"stylesheet\"><title>Bootleg</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><div class=\"w-screen h-max min-h-svh\"><div id=\"bg\" class=\"background-svg fixed h-full -z-50\"></div><div class=\"flex flex-col justify-center py-3 h-full\"><h1 class=\"text-6xl font-bold mx-auto text-center text-transparent text-stroke-2 font-mono \">Bootleg</h1><div class=\"flex-initial sticky top-0 z-10\"><div class=\"max-w-full my-1 mx-2 md:max-w-lg md:mx-auto\"><form><input name=\"search\" hx-post=\"/search\" hx-trigger=\"search, submit\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" class=\"bg-light-green border border-gold-yellow text-white text-3xl rounded-lg focus:ring-gold-yellow focus:border-gold-yellow block w-full ps-10 p-2.5\" type=\"search\" placeholder=\"Sök här efter alkodryck\"></form></div></div><div id=\"search-results\" class=\"mx-4 gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -40,7 +40,7 @@ func Index(productData []taxes.Product, metadata systembolaget.Metadata) templ.C
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

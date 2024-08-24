@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"shikakaQuelor/bootleg/internals/systembolaget"
@@ -85,12 +86,19 @@ var Variables = VariableResponse{
 func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
+	router.SetTrustedProxies([]string{"127.0.0.1", "::1"})
+
+	port, found := os.LookupEnv("PORT")
+	if !found {
+		port = "8080"
+	}
 
 	router.POST("/search", getSearch)
+	router.POST("/details", getDetails)
 	router.GET("/", getIndex)
 	router.Static("/static", "./static/")
 
-	router.Run("localhost:8040")
+	router.Run(":" + port)
 }
 
 func getSearch(c *gin.Context) {
@@ -105,12 +113,23 @@ func getSearch(c *gin.Context) {
 	render(c, http.StatusOK, components.Products(data.Products, data.MetaData))
 }
 
+func getDetails(c *gin.Context) {
+	var p components.ProductDetails
+
+	err := c.ShouldBind(&p)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	render(c, http.StatusOK, components.Details(p))
+}
+
 func getIndex(c *gin.Context) {
 	data, err := getQueryResults(c)
 	if err != nil {
 		return
 	}
-	c.Header("HX-Push-Url", fmt.Sprintf("?search=%s", c.Query(("search"))))
 	render(c, http.StatusOK, views.Index(data.Products, data.MetaData))
 }
 
