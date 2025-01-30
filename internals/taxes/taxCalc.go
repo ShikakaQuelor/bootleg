@@ -217,7 +217,7 @@ func calcVat(product *Product) {
 }
 
 func calcPerLiter(product *Product, taxInfo TaxInfo) {
-	product.AlcoholTax = float64(product.Volume/1000) * taxInfo.TaxPerPercentAndLiter
+	product.AlcoholTax = (float64(product.Volume) / 1000) * taxInfo.TaxPerPercentAndLiter
 }
 
 func calcPerPercentageAndLiter(product *Product, taxInfo TaxInfo) {
