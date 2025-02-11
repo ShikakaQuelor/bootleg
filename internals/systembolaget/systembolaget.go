@@ -6,7 +6,7 @@ import (
 	"shikakaQuelor/bootleg/internals/taxes"
 	"sync"
 
-	"github.com/alexgustafsson/systembolaget-api/v3/systembolaget"
+	"github.com/alexgustafsson/systembolaget-api/v4/systembolaget"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
 )
