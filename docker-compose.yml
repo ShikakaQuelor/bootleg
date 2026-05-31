@@ -1,0 +1,18 @@
+services:
+  bootleg:
+    build: .
+    image: bootleg
+    container_name: bootleg
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - GIN_MODE=release
+      - PORT=3000
+    networks:
+      - caddy_net
+
+networks:
+  caddy_net:
+    name: caddy_net
+    external: true
