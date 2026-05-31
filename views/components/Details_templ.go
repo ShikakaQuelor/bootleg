@@ -8,14 +8,16 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "strconv"
+import (
+	"fmt"
+)
 
 type ProductDetails struct {
-	SystembolagetType          string `form:"SystembolagetType"`
-	SkatteverketType           string `form:"SkatteverketType"`
-	IsAlcoholFree              bool   `form:"IsAlcoholFree"`
-	SystembolagetUnitCut       string `form:"SystembolagetUnitCut"`
-	SystembolagetPercentageCut string `form:"SystembolagetPercentageCut"`
+	SystembolagetType          string  `form:"systembolagetType"`
+	SkatteverketType           string  `form:"skatteverketType"`
+	IsAlcoholFree              bool    `form:"isAlcoholFree"`
+	SystembolagetUnitCut       float32 `form:"systembolagetUnitCut"`
+	SystembolagetPercentageCut float32 `form:"systembolagetPercentageCut"`
 }
 
 func Details(product ProductDetails) templ.Component {
@@ -36,72 +38,74 @@ func Details(product ProductDetails) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" class=\"fixed inset-0 bg-opacity-50 z-50 flex flex-col items-center\" _=\"on closeModal add .closing then wait for animationend then remove me\"><div class=\"absolute -z-10 inset-0\" _=\"on click trigger closeModal\"></div><div class=\"m-auto bg-gray-200 w-9/12 m-w-[48rem] border-solid border-sky-50 rounded-lg shadow-md p-5\"><div class=\"grid grid-cols-[auto_auto] gap-x-5 order-4 w-full\"><p>Systembolaget typ </p><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal\" class=\"opening fixed inset-0 bg-black/50 z-50 flex flex-col items-center\" _=\"on animationend remove .opening end on closeModal add .closing then wait for animationend then remove me\"><div class=\"absolute -z-10 inset-0\" _=\"on click trigger closeModal\"></div><div class=\"modal-content m-auto bg-white w-11/12 max-w-lg rounded-xl shadow-xl p-6\"><h2 class=\"text-lg font-semibold text-gray-900 mb-4\">Produktdetaljer</h2><div class=\"grid grid-cols-[1fr_auto] gap-x-6 gap-y-2 text-sm\"><span class=\"text-gray-600\">Systembolaget typ</span> <span class=\"text-gray-900 text-right font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(product.SystembolagetType)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 23, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 26, Col: 94}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>Skatteverket typ</p><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"text-gray-600\">Skatteverket typ</span> <span class=\"text-gray-900 text-right font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(product.SkatteverketType)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 25, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 28, Col: 93}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>Alkoholfri</p><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"text-gray-600\">Alkoholfri</span> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if product.IsAlcoholFree {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-gray-900 text-right font-medium\">Ja</span> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-gray-900 text-right font-medium\">Nej</span> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-gray-600\">Systembolagets fasta påslag</span> <span class=\"text-gray-900 text-right font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(product.IsAlcoholFree))
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f", product.SystembolagetUnitCut))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 27, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 36, Col: 118}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>Systembolagets fasta påslag</p><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kr</span> <span class=\"text-gray-600\">Systembolagets rörliga påslag</span> <span class=\"text-gray-900 text-right font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(product.SystembolagetUnitCut)
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f", product.SystembolagetPercentageCut))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 29, Col: 37}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 38, Col: 124}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>Systembolagets rörliga påslag</p><p>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(product.SystembolagetPercentageCut)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components/Details.templ`, Line: 31, Col: 43}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p></p></div><br><br><button class=\"\" _=\"on click trigger closeModal\">Close</button></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kr</span></div><div class=\"mt-5 flex justify-end\"><button class=\"px-4 py-2 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700 transition-colors\" _=\"on click trigger closeModal\">Stäng</button></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
