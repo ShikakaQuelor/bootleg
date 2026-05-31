@@ -3,9 +3,8 @@ module shikakaQuelor/bootleg
 go 1.22.5
 
 require (
-	github.com/alexgustafsson/systembolaget-api/v4 v4.1.2
+	github.com/alexgustafsson/systembolaget-api/v4 v4.2.2
 	github.com/gin-gonic/gin v1.10.0
-	golang.org/x/tools v0.13.0
 )
 
 require github.com/kr/text v0.2.0 // indirect
