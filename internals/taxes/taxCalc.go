@@ -1,6 +1,7 @@
 package taxes
 
 import (
+	"log"
 	"slices"
 )
 
@@ -100,7 +101,7 @@ type Product struct {
 	TasteClockRoughness             int           `json:"tasteClockRoughness,omitempty" form:"tasteClockRoughness"`
 	TasteClockSmokiness             int           `json:"tasteClockSmokiness,omitempty" form:"tasteClockSmokiness"`
 	TasteClockSweetness             int           `json:"tasteClockSweetness,omitempty" form:"tasteClockSweetness"`
-	TasteClocks                     TasteClock    `json:"tasteClocks,omitempty" form:"tasteClocks"`
+	TasteClocks                     []TasteClock  `json:"tasteClocks,omitempty" form:"tasteClocks"`
 	TasteSymbols                    []string      `json:"tasteSymbols,omitempty" form:"tasteSymbols"`
 	Usage                           string        `json:"usage,omitempty" form:"usage"`
 	Vat                             float32       `json:"moms,omitempty" form:"moms"`
@@ -245,7 +246,17 @@ func calcTax(product *Product) {
 		return
 	}
 	k := product.SkatteverketType
-	CategoriesMap[k](product, findTaxLevel(product, Variables.Skatteverket.TaxCategories[k]))
+	calcFn, ok := CategoriesMap[k]
+	if !ok {
+		log.Printf("unknown SkatteverketType %q for product %s, skipping tax calculation", k, product.ProductID)
+		return
+	}
+	taxBrackets, ok := Variables.Skatteverket.TaxCategories[k]
+	if !ok || len(taxBrackets) == 0 {
+		log.Printf("no tax brackets for SkatteverketType %q for product %s, skipping tax calculation", k, product.ProductID)
+		return
+	}
+	calcFn(product, findTaxLevel(product, taxBrackets))
 }
 
 func findSkatteverketType(product *Product) string {

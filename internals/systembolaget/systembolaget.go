@@ -2,6 +2,7 @@ package systembolaget
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"shikakaQuelor/bootleg/internals/taxes"
 	"sync"
@@ -29,7 +30,10 @@ var (
 )
 
 func Search(query string, page int, current int) (SearchResponse, gin.H) {
-	client := getClient()
+	client, err := getClient()
+	if err != nil {
+		return SearchResponse{}, gin.H{"error": err.Error()}
+	}
 
 	searchOptions := &systembolaget.SearchOptions{
 		Page:     page,
@@ -42,7 +46,10 @@ func Search(query string, page int, current int) (SearchResponse, gin.H) {
 		systembolaget.FilterByQuery(query))
 
 	if err != nil {
-		client = swapClient()
+		client, err = swapClient()
+		if err != nil {
+			return SearchResponse{}, gin.H{"error": err.Error()}
+		}
 		res, err = client.Search(
 			context.Background(),
 			searchOptions,
@@ -54,7 +61,9 @@ func Search(query string, page int, current int) (SearchResponse, gin.H) {
 
 	var p []taxes.Product
 
-	mapstructure.Decode(res.Products, &p)
+	if err := mapstructure.Decode(res.Products, &p); err != nil {
+		return SearchResponse{}, gin.H{"error": fmt.Sprintf("failed to decode products: %v", err)}
+	}
 
 	for k := range p {
 		taxes.CalculateTaxesAndCut(&p[k])
@@ -72,28 +81,36 @@ func Search(query string, page int, current int) (SearchResponse, gin.H) {
 		}}, nil
 }
 
-func getClient() *systembolaget.Client {
+func getClient() (*systembolaget.Client, error) {
 	clientMutex.Lock()
 	defer clientMutex.Unlock()
 
 	if clientInstance == nil {
-		clientInstance = createNewClient()
+		c, err := createNewClient()
+		if err != nil {
+			return nil, err
+		}
+		clientInstance = c
 	}
-	return clientInstance
+	return clientInstance, nil
 }
 
-func swapClient() *systembolaget.Client {
+func swapClient() (*systembolaget.Client, error) {
 	clientMutex.Lock()
 	defer clientMutex.Unlock()
 
-	clientInstance = createNewClient()
-	return clientInstance
+	c, err := createNewClient()
+	if err != nil {
+		return nil, err
+	}
+	clientInstance = c
+	return clientInstance, nil
 }
 
-func createNewClient() *systembolaget.Client {
+func createNewClient() (*systembolaget.Client, error) {
 	apiKey, err := systembolaget.GetAPIKey(context.Background())
 	if err != nil {
-		log.Fatalf("Failed to get API key: %v", err)
+		return nil, fmt.Errorf("failed to get API key: %w", err)
 	}
-	return systembolaget.NewClient(apiKey)
+	return systembolaget.NewClient(apiKey), nil
 }
