@@ -32,7 +32,64 @@ func Index(productData []taxes.Product, metadata systembolaget.Metadata) templ.C
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script><script src=\"https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js\"></script><link href=\"/static/style.css\" rel=\"stylesheet\"><title>Bootleg</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><div class=\"w-screen h-max min-h-svh\"><div id=\"bg\" class=\"background-svg fixed h-full -z-50\"></div><div class=\"flex flex-col justify-center py-3 h-full min-h-svh\"><h1 class=\"text-6xl font-bold mx-auto text-center text-transparent text-stroke-2 font-mono \">Bootleg</h1><div class=\"flex-initial sticky top-0 z-10\"><div class=\"max-w-full my-1 mx-2 md:max-w-lg md:mx-auto\"><form><input name=\"search\" hx-post=\"/search\" hx-trigger=\"search, submit\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" class=\"bg-light-green border border-gold-yellow text-white text-3xl rounded-lg focus:ring-gold-yellow focus:border-gold-yellow block w-full ps-10 p-2.5\" type=\"search\" placeholder=\"Sök här efter alkodryck\"></form></div></div><div id=\"search-results\" class=\"mx-4 gap-2\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script><link href=\"/static/style.css\" rel=\"stylesheet\"><title>Bootleg</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if len(productData) > 0 {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"min-h-svh flex flex-col\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = pageContent(productData, metadata).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"hero min-h-svh flex flex-col\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = pageContent(productData, metadata).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</html>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func pageContent(productData []taxes.Product, metadata systembolaget.Metadata) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var2 == nil {
+			templ_7745c5c3_Var2 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"bg\" class=\"background-svg fixed h-full -z-50\"></div><!-- Hero: full viewport, title + search centered. Hidden after search. --><section id=\"hero-section\" class=\"flex flex-col items-center justify-center min-h-svh px-4 pb-8\"><h1 class=\"text-7xl font-bold text-transparent text-stroke-2 font-mono mb-8 text-center\">Bootleg</h1><div class=\"w-full max-w-lg\"><form><input name=\"search\" hx-post=\"/search\" hx-trigger=\"search, submit\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" class=\"bg-light-green border-2 border-gold-yellow text-white text-2xl rounded-xl focus:ring-gold-yellow focus:border-gold-yellow block w-full px-5 py-3 placeholder-white/50\" type=\"search\" placeholder=\"Sök här efter alkodryck\" _=\"on htmx:afterSwap remove .hero from body\"></form></div></section><!-- Compact sticky header: visible after search --><header id=\"compact-header\" class=\"sticky top-0 z-20 bg-dark-green border-b border-gold-yellow/40 shadow-lg\"><div class=\"max-w-xl mx-auto px-4 py-2\"><form><input name=\"search\" hx-post=\"/search\" hx-trigger=\"search, submit\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" class=\"bg-light-green border border-gold-yellow text-white text-lg rounded-lg focus:ring-gold-yellow focus:border-gold-yellow block w-full px-4 py-1.5 placeholder-white/50\" type=\"search\" placeholder=\"Sök här efter alkodryck\"></form></div></header><!-- Results --><main class=\"flex-1 w-full max-w-xl mx-auto px-4 py-4\"><div id=\"search-results\" class=\"flex flex-col gap-0\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -40,7 +97,7 @@ func Index(productData []taxes.Product, metadata systembolaget.Metadata) templ.C
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

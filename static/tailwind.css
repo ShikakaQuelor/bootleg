@@ -15,18 +15,33 @@
 }
 
 #modal.closing {
-  /* Animate when closing */
   animation-name: fadeOut;
   animation-duration: 150ms;
   animation-timing-function: ease;
 }
 
 #modal.closing > .modal-content {
-  /* Animate when closing */
   animation-name: zoomOut;
   animation-duration: 150ms;
   animation-timing-function: ease;
 }
+
+#modal.opening {
+  animation-name: fadeIn;
+  animation-duration: 150ms;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+
+#modal.opening > .modal-content {
+  animation-name: zoomIn;
+  animation-duration: 150ms;
+  animation-timing-function: ease;
+}
+
+/* Hero/compact header two-state toggle */
+body.hero #compact-header { display: none; }
+body:not(.hero) #hero-section { display: none; }
 
 @keyframes slide {
   0% {
